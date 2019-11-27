@@ -1,0 +1,33 @@
+name: Openwrt Build Bot
+on:
+  push:
+    branches: master
+  schedule:
+  - cron: 0 2 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@master
+    - name: Install tools
+      run: sudo apt install -y wget curl
+    - name: Update files
+      run: |
+        mkdir -p /tmp/routes
+        cd /tmp/routes
+        wget -O chnroutes.txt https://raw.githubusercontent.com/misakaio/chnroutes2/master/chnroutes.txt
+        sed -i chnroutes.txt '/^#/d'
+        wget -O dnsmasq.conf https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf
+        sed -i dnsmasq.conf 's/114.114.114.114/180.76.76.76/g'
+    - name: Upload
+      run: |
+        cd /tmp/routes
+        git init
+        git config user.name "bot"
+        git config user.email "bot@github.com"
+        git add .
+        git commit -m "auto update"
+        git push --force --quiet "https://$GITHUB_TOKEN@github.com/wobani/routes.git" HEAD:gh-pages
