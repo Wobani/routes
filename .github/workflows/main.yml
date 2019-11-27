@@ -23,6 +23,8 @@ jobs:
         wget -O dnsmasq.conf https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf
         sed -i 's/114.114.114.114/180.76.76.76/g' dnsmasq.conf
     - name: Upload
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd /tmp/routes
         git init
@@ -30,4 +32,4 @@ jobs:
         git config user.email "bot@github.com"
         git add .
         git commit -m "auto update"
-        git push --force --quiet "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/wobani/routes.git" HEAD:gh-pages
+        git push --force --quiet "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/Wobani/routes.git" HEAD:gh-pages
