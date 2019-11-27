@@ -19,9 +19,9 @@ jobs:
         mkdir -p /tmp/routes
         cd /tmp/routes
         wget -O chnroutes.txt https://raw.githubusercontent.com/misakaio/chnroutes2/master/chnroutes.txt
-        sed -i chnroutes.txt '/^#/d'
+        sed -i '/^#/d' chnroutes.txt
         wget -O dnsmasq.conf https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf
-        sed -i dnsmasq.conf 's/114.114.114.114/180.76.76.76/g'
+        sed -i 's/114.114.114.114/180.76.76.76/g' dnsmasq.conf
     - name: Upload
       run: |
         cd /tmp/routes
