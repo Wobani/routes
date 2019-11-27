@@ -1,4 +1,4 @@
-name: Openwrt Build Bot
+name: Auto Update
 on:
   push:
     branches: master
@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Install tools
-      run: sudo apt install -y wget curl
+      run: sudo apt-get install -y wget curl
     - name: Update files
       run: |
         mkdir -p /tmp/routes
@@ -30,4 +30,4 @@ jobs:
         git config user.email "bot@github.com"
         git add .
         git commit -m "auto update"
-        git push --force --quiet "https://$GITHUB_TOKEN@github.com/wobani/routes.git" HEAD:gh-pages
+        git push --force --quiet "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/wobani/routes.git" HEAD:gh-pages
